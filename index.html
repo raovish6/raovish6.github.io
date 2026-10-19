@@ -298,7 +298,10 @@
     transition:transform .25s ease,box-shadow .25s ease,border-color .25s;
   }
   .fig:hover{transform:translateY(-2px);border-color:var(--rule-2);box-shadow:0 2px 4px rgba(21,23,26,.06),0 18px 40px -16px rgba(21,23,26,.28);}
-  .fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:14px;}
+  .fig img,.fig video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:14px;}
+  .fig-video::after{content:"\25B6";font-size:11px;}
+  .fig-video{aspect-ratio:1/1;background:#F7F6F1;}
+  .fig-video video{padding:0;}
   .fig::after{
     content:"⤢";position:absolute;right:10px;bottom:8px;
     font-size:14px;line-height:1;color:var(--ink-3);
@@ -308,9 +311,12 @@
   .fig:hover::after{opacity:1;}
   @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .fig{background:#F4F3F0;} }
   :root[data-theme="dark"] .fig{background:#F4F3F0; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .fig-video{background:#F7F6F1;} }
+  :root[data-theme="dark"] .fig-video{background:#F7F6F1;}
   @media (max-width:860px){
     .entry{grid-template-columns:1fr;gap:22px;padding:34px 0;}
     .entry .fig{order:-1;aspect-ratio:16/10;}
+    .entry .fig-video{aspect-ratio:1/1;}
   }
 
   /* lightbox */
@@ -319,6 +325,8 @@
   }
   dialog.lightbox::backdrop{background:rgba(8,9,11,.82);backdrop-filter:blur(4px);}
   dialog.lightbox img{max-width:min(96vw,1400px);max-height:88vh;width:auto;height:auto;background:#fff;border-radius:10px;padding:16px;object-fit:contain;}
+  dialog.lightbox video{max-width:min(96vw,900px);max-height:88vh;width:auto;height:auto;background:#fff;border-radius:10px;}
+  dialog.lightbox [hidden]{display:none;}
   dialog.lightbox p{margin:10px 0 0;text-align:center;font-family:var(--mono);font-size:12px;color:#c9c9c9;}
   dialog.lightbox button{
     position:absolute;top:-4px;right:-4px;width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
@@ -340,6 +348,24 @@
   .card .meta a{color:var(--ink);border-bottom:1px solid var(--rule-2);}
   .card .meta a:hover{color:var(--accent-ink);border-bottom-color:var(--accent);text-decoration:none;}
   @media (max-width:640px){ .cards{grid-template-columns:1fr;} }
+
+  /* press */
+  ul.press{margin:0;padding:0;list-style:none;}
+  ul.press li{
+    display:grid;grid-template-columns:190px 1fr;gap:4px 24px;align-items:baseline;
+    padding:14px 0;border-top:1px solid var(--rule);
+  }
+  ul.press li:first-child{border-top:none;padding-top:0;}
+  ul.press .outlet{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);}
+  ul.press a{font-size:1.02rem;line-height:1.45;color:var(--ink);}
+  ul.press a:hover{color:var(--accent-ink);}
+  ul.press a::after{content:"\2197";margin-left:6px;font-size:11px;color:var(--ink-3);}
+  ul.press .lang{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);border:1px solid var(--rule-2);border-radius:3px;
+    padding:1px 5px;margin-left:7px;vertical-align:1px;white-space:nowrap;
+  }
+  @media (max-width:640px){ ul.press li{grid-template-columns:1fr;gap:5px;} }
 
   /* publications */
   .pubgroup{margin:0 0 36px;}
@@ -392,6 +418,7 @@
     <ul>
       <li><a href="#about">About</a></li>
       <li><a href="#work">Work</a></li>
+      <li><a href="#press">Press</a></li>
       <li><a href="#code">Code</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#recognition">Recognition</a></li>
@@ -420,7 +447,7 @@
 
         <p class="affil reveal">
           Bioengineering, Perelman School of Medicine<br>
-          Research Fellow, Rajpurkar Lab, Harvard Medical School
+          Researcher in the Rajpurkar Lab, Harvard Medical School
         </p>
 
         <ul class="links reveal">
@@ -462,6 +489,18 @@
 
       <article class="entry reveal">
         <div>
+          <p class="rail"><span class="venue">Nature Biomedical Engineering</span><span>October 2026</span><span class="role">First author</span></p>
+          <h3>Repurposing adult AI radiograph models for neonatal care through continual learning: an international multicentre study</h3>
+          <p>Fewer than one in five commercial radiology AI models are cleared for use in children. We took an adult model for endotracheal tube assessment and adapted it to neonatal chest X-rays with continual learning: the model moved from hospital to hospital across 30 NICUs in 20 countries and territories, retraining on just 50 radiographs at each stop. Only the model travels, so the approach is designed so that patient data never has to leave a hospital.</p>
+          <p>Landmark localization error fell to 0.67 cm, against 1.29 cm for hospital-specific fine-tuning and 4.30 cm for the unadapted adult model, and the gain held at 29 of 30 sites, with performance on hospitals earlier in the sequence preserved rather than forgotten.</p>
+          <p class="meta"><a href="https://www.nature.com/articles/s41551-026-01812-6">Paper</a><a href="https://github.com/rajpurkarlab/MAIDA-NICU-continual-learning">Code</a></p>
+        </div>
+        <figure class="fig fig-video">
+          <video src="assets/maida.mp4" poster="assets/maida-poster.webp" width="1080" height="1080" muted loop playsinline preload="none" aria-label="Animation: a model travels between neonatal intensive care units around the world, learning at each hospital in turn, while an example chest radiograph shows predicted endotracheal tube tip and carina positions"></video>
+        </figure>
+      </article>
+      <article class="entry reveal">
+        <div>
           <p class="rail"><span class="venue">Nature</span><span>2025</span><span class="role">First author · Perspective</span></p>
           <h3>Multimodal generative AI for medical image interpretation</h3>
           <p>Radiology reports are written by hand, one image at a time, by specialists who are in short supply. This Perspective synthesizes the progress and open problems in generative models that draft reports directly from medical images, with attention to validating accuracy, exposing reasoning, and capturing the nuance of a real impression.</p>
@@ -469,16 +508,6 @@
           <p class="meta"><a href="https://doi.org/10.1038/s41586-025-08675-y">Paper</a></p>
         </div>
         <figure class="fig"><img src="assets/nature.webp" alt="Conventional AI image interpretation versus multimodal generative AI with draft reports, grounded annotations and clinician interaction" loading="lazy" width="1600" height="802"></figure>
-      </article>
-      <article class="entry reveal">
-        <div>
-          <p class="rail"><span class="venue">Nature Biomedical Engineering</span><span>In press</span><span class="role">First author</span></p>
-          <h3>Repurposing adult AI radiograph models for neonatal care through continual learning</h3>
-          <p>Fewer than one in five commercial radiology AI models are cleared for use in children. We took an adult model for endotracheal tube assessment and adapted it to neonatal chest X-rays with continual learning: the model moved from hospital to hospital across 30 NICUs in 19 countries and territories, retraining on just 50 radiographs at each stop, with no patient data ever leaving a site.</p>
-          <p>Landmark localization error fell to 0.67 cm, against 1.29 cm for hospital-specific fine-tuning and 4.30 cm for the unadapted adult model, at 29 of 30 sites, and the model retained its performance on earlier hospitals in the sequence rather than forgetting them.</p>
-          <p class="meta"><a href="https://github.com/rajpurkarlab/MAIDA-NICU-continual-learning">Code</a></p>
-        </div>
-        <figure class="fig"><img src="assets/nature-bme.webp" alt="Study overview: an adult radiology model adapted across 30 NICUs by continual learning, compared with fine-tuning and direct prediction" loading="lazy" width="1600" height="1372"></figure>
       </article>
       <article class="entry reveal">
         <div>
@@ -534,13 +563,43 @@
     </div>
   </section>
 
+  <section id="press">
+    <div class="sec-head reveal"><span class="num">03</span><h2>Press</h2></div>
+    <ul class="press reveal">
+      <li>
+        <span class="outlet">Harvard Medical School</span>
+        <a href="https://hms.harvard.edu/news/children-are-left-out-medical-ai-new-method-could-help">Children Are Left Out of Medical AI. A New Method Could Help.</a>
+      </li>
+      <li>
+        <span class="outlet">University of Duisburg-Essen</span>
+        <a href="https://www.uni-due.de/med/meldung.php?id=2011">KI in der Kindermedizin: Forscher:innen schlie&szlig;en Datenl&uuml;cke ohne Datenschutzverletzungen <span class="lang">German</span></a>
+      </li>
+      <li>
+        <span class="outlet">Radiology Business</span>
+        <a href="https://radiologybusiness.com/topics/artificial-intelligence/researchers-develop-way-adapting-adult-radiology-ai-models-pediatric-population">Researchers develop way of adapting adult radiology AI models to the pediatric population</a>
+      </li>
+      <li>
+        <span class="outlet">Medical Xpress</span>
+        <a href="https://medicalxpress.com/news/2026-10-privacy-medical-ai-children-local.html">Privacy-preserving training could expand medical AI for children while keeping data local</a>
+      </li>
+      <li>
+        <span class="outlet">HospiMedica</span>
+        <a href="https://www.hospimedica.com/critical-care/articles/294813892/privacy-preserving-learning-model-adapts-adult-radiology-ai-for-neonatal-care.html">Privacy-Preserving Learning Model Adapts Adult Radiology AI for Neonatal Care</a>
+      </li>
+      <li>
+        <span class="outlet">MT-Dialog</span>
+        <a href="https://www.mtdialog.de/news/artikel/ki-in-der-kindermedizin">KI in der Kindermedizin <span class="lang">German</span></a>
+      </li>
+    </ul>
+  </section>
+
   <section id="code">
-    <div class="sec-head reveal"><span class="num">03</span><h2>Code and data</h2></div>
+    <div class="sec-head reveal"><span class="num">04</span><h2>Code and data</h2></div>
     <div class="cards reveal">
       <article class="card">
         <span class="kind">Framework</span>
         <h3>Continual learning for pediatric adaptation</h3>
-        <p>Adapt adult radiograph interpretation models to pediatric and neonatal care without degrading their original performance. Includes a pretrained model and demo for ETT tip and carina localization.</p>
+        <p>Adapt adult radiograph interpretation models to pediatric and neonatal care through continual learning across hospitals. Includes a pretrained model and a demo for ETT tip and carina localization.</p>
         <p class="meta"><a href="https://github.com/rajpurkarlab/MAIDA-NICU-continual-learning">GitHub</a></p>
       </article>
       <article class="card">
@@ -565,12 +624,12 @@
   </section>
 
   <section id="publications">
-    <div class="sec-head reveal"><span class="num">04</span><h2>Publications</h2></div>
+    <div class="sec-head reveal"><span class="num">05</span><h2>Publications</h2></div>
 
     <div class="pubgroup reveal">
       <h3 class="label">Peer reviewed</h3>
       <ul class="pubs">
-        <li><span class="yr">2026</span><span><b>Rao VM</b>, et al. Repurposing Adult AI Radiograph Interpretation Models for Neonatal Care Through Continual Learning: An International Multi-Center Study. <i>Nature Biomedical Engineering</i>. In press.</span></li>
+        <li><span class="yr">2026</span><span><b>Rao VM</b>, et al. <a href="https://www.nature.com/articles/s41551-026-01812-6">Repurposing adult AI radiograph models for neonatal care through continual learning: an international multicentre study</a>. <i>Nature Biomedical Engineering</i>.</span></li>
         <li><span class="yr">2026</span><span>Soylu S, Okose O, Chen Y, Wang B, Kamani D, <b>Rao VM</b>, et al. <a href="https://doi.org/10.1007/s00405-025-09994-6">Prospective Case-Control Pilot Study of a Smartphone Application as a Potential Screening Tool for Vocal Fold Paresis/Paralysis</a>. <i>European Archives of Oto-Rhino-Laryngology</i>.</span></li>
         <li><span class="yr">2026</span><span><b>Rao VM</b>, Zhang S, Plosky B, Hsu PD, Wang B, Zou J, Zitnik M, Topol EJ, Rajpurkar P. <a href="https://doi.org/10.1038/s41587-026-03064-w">Generalist Biological AI in Modeling the Language of Life</a>. <i>Nature Biotechnology</i>.</span></li>
         <li><span class="yr">2025</span><span><b>Rao VM</b>, Hla M, Moor M, Adithan S, Kwak S, Topol EJ, Rajpurkar P. <a href="https://doi.org/10.1038/s41586-025-08675-y">Multimodal Generative AI for Medical Image Interpretation</a>. <i>Nature</i>.</span></li>
@@ -609,7 +668,7 @@
   </section>
 
   <section id="recognition">
-    <div class="sec-head reveal"><span class="num">05</span><h2>Recognition</h2></div>
+    <div class="sec-head reveal"><span class="num">06</span><h2>Recognition</h2></div>
     <ul class="awards reveal">
       <li><strong>Schwarzman Scholar</strong>Tsinghua University, 2024. One of 141 selected from more than 5,000 applicants.</li>
       <li><strong>Rhodes Scholarship Finalist</strong></li>
@@ -637,6 +696,7 @@
 <dialog class="lightbox" id="lightbox" aria-label="Figure">
   <button type="button" aria-label="Close" data-close>×</button>
   <img alt="">
+  <video controls loop playsinline hidden></video>
   <p></p>
 </dialog>
 
@@ -662,18 +722,44 @@
     rv.forEach(el => ro.observe(el));
   }
 
+  /* ---- figure videos: play while on screen ---- */
+  const figVids = document.querySelectorAll('.fig video');
+  if (reduce) figVids.forEach(v => { v.controls = true; v.preload = 'metadata'; });
+  else {
+    const onScreen = new Set();
+    const sync = () => figVids.forEach(v => {
+      if (onScreen.has(v) && !document.hidden) v.play().catch(() => { v.controls = true; });
+      else v.pause();
+    });
+    const vo = new IntersectionObserver(es => {
+      es.forEach(e => e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target));
+      sync();
+    }, {rootMargin:'100px 0px'});
+    figVids.forEach(v => vo.observe(v));
+    document.addEventListener('visibilitychange', sync);
+  }
+
   /* ---- lightbox ---- */
-  const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('p');
+  const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'),
+        lbVid = lb.querySelector('video'), lbCap = lb.querySelector('p');
   document.querySelectorAll('.fig').forEach(f => {
     f.tabIndex = 0; f.setAttribute('role','button');
     const open = () => {
-      const img = f.querySelector('img'), h3 = f.closest('.entry').querySelector('h3');
-      lbImg.src = img.src; lbImg.alt = img.alt; lbCap.textContent = h3.textContent;
+      const media = f.querySelector('img, video'), h3 = f.closest('.entry').querySelector('h3'),
+            isVid = media.tagName === 'VIDEO';
+      lbImg.hidden = isVid; lbVid.hidden = !isVid;
+      if (isVid) {
+        lbVid.src = media.currentSrc || media.src;
+        lbVid.currentTime = media.currentTime || 0;
+        lbVid.play().catch(() => {});
+      } else { lbImg.src = media.src; lbImg.alt = media.alt; }
+      lbCap.textContent = h3.textContent;
       lb.showModal();
     };
     f.addEventListener('click', open);
     f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
+  lb.addEventListener('close', () => { lbVid.pause(); });
   lb.addEventListener('click', e => { if (e.target === lb || e.target.hasAttribute('data-close')) lb.close(); });
 
   /* ---- hero visual ---- */
